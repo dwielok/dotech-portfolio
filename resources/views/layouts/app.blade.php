@@ -13,11 +13,43 @@
     <meta property="og:image" content="@yield('og_image', asset('images/og-image.jpg'))">
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+    <style>
+        .stat-card {
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-4px);
+        }
+        .lazy {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lazy.loaded {
+            opacity: 1;
+        }
+        /* Ensure all icons have consistent display */
+        .fas, .fab, .far {
+            display: inline-block;
+        }
+        .group:hover .fa-lightbulb,
+        .group:hover .fa-shield-alt,
+        .group:hover .fa-handshake,
+        .group:hover .fa-chart-line {
+            filter: drop-shadow(0 0 4px rgba(255,255,255,0.5));
+        }
+    </style>
 </head>
 
 <body class="bg-white text-gray-900 font-jakarta antialiased">
