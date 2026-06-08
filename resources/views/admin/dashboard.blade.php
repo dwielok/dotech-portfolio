@@ -185,7 +185,7 @@
                         <p class="font-semibold text-sm text-gray-800 truncate group-hover:text-dotech-blue transition">{{ $project->title }}</p>
                         <div class="flex items-center gap-2 mt-1">
                             <i class="fas fa-calendar-alt text-gray-300 text-xs"></i>
-                            {{-- <p class="text-xs text-gray-400">{{ $project->created_at->format('d M Y') }}</p> --}}
+                            <p class="text-xs text-gray-400">{{ $project->created_at ? $project->created_at->format('d M Y') "-" }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
