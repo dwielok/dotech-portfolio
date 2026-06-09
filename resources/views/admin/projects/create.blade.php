@@ -2,133 +2,241 @@
 @section('title', 'Tambah Proyek')
 
 @section('content')
-<div class="max-w-4xl">
+<div class="max-w-7xl mx-auto px-4 sm:px-0">
     <form method="POST" action="{{ route('admin.projects.store') }}" enctype="multipart/form-data" class="space-y-6">
         @csrf
 
+        {{-- Header --}}
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">Tambah Proyek Baru</h1>
+                <p class="text-sm text-gray-500 mt-1">Lengkapi informasi detail proyek Anda</p>
+            </div>
+            <div class="flex gap-3">
+                <a href="{{ route('admin.projects.index') }}" class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-xl transition-all">
+                    Batal
+                </a>
+                <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-medium rounded-xl shadow-lg shadow-blue-500/25 transition-all duration-200 transform hover:scale-[1.02]">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Simpan Proyek
+                </button>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Main Content --}}
-            <div class="lg:col-span-2 space-y-5">
-                <div class="admin-card p-6 space-y-5">
-                    <h3 class="font-semibold text-gray-700 border-b pb-3">Informasi Proyek</h3>
-
-                    <div>
-                        <label class="form-label">Judul Proyek <span class="text-red-500">*</span></label>
-                        <input type="text" name="title" value="{{ old('title') }}" class="form-input" required>
-                        @error('title')<p class="form-error">{{ $message }}</p>@enderror
+            <div class="lg:col-span-2 space-y-6">
+                {{-- Informasi Proyek --}}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
+                        <div class="w-8 h-8 bg-blue-50 rounded-xl flex items-center justify-center">
+                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Informasi Proyek</h3>
                     </div>
 
                     <div>
-                        <label class="form-label">Deskripsi Singkat <span class="text-red-500">*</span></label>
-                        <textarea name="short_description" rows="2" class="form-input" required>{{ old('short_description') }}</textarea>
-                        @error('short_description')<p class="form-error">{{ $message }}</p>@enderror
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Judul Proyek <span class="text-red-500">*</span></label>
+                        <input type="text" name="title" value="{{ old('title') }}"
+                               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all"
+                               placeholder="Masukkan judul proyek" required>
+                        @error('title')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
 
                     <div>
-                        <label class="form-label">Deskripsi Lengkap</label>
-                        <textarea name="full_description" rows="8" class="form-input" id="editor">{{ old('full_description') }}</textarea>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Singkat <span class="text-red-500">*</span></label>
+                        <textarea name="short_description" rows="2"
+                                  class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all resize-none"
+                                  placeholder="Tulis deskripsi singkat proyek..." required>{{ old('short_description') }}</textarea>
+                        @error('short_description')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Lengkap</label>
+                        <textarea name="full_description" rows="8"
+                                  class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all"
+                                  id="editor">{{ old('full_description') }}</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="form-label">Nama Klien</label>
-                            <input type="text" name="client_name" value="{{ old('client_name') }}" class="form-input">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Klien</label>
+                            <input type="text" name="client_name" value="{{ old('client_name') }}"
+                                   class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all"
+                                   placeholder="Nama klien atau perusahaan">
                         </div>
                         <div>
-                            <label class="form-label">Tanggal Proyek</label>
-                            <input type="date" name="project_date" value="{{ old('project_date') }}" class="form-input">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Proyek</label>
+                            <input type="date" name="project_date" value="{{ old('project_date') }}"
+                                   class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all">
                         </div>
                         <div>
-                            <label class="form-label">URL Proyek</label>
-                            <input type="url" name="project_url" value="{{ old('project_url') }}" class="form-input" placeholder="https://...">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">URL Proyek</label>
+                            <input type="url" name="project_url" value="{{ old('project_url') }}"
+                                   class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all"
+                                   placeholder="https://example.com">
                         </div>
                         <div>
-                            <label class="form-label">Kategori</label>
-                            <input type="text" name="category" value="{{ old('category') }}" class="form-input" placeholder="Web App, Mobile, dll">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                            <input type="text" name="category" value="{{ old('category') }}"
+                                   class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all"
+                                   placeholder="Web App, Mobile, Branding">
                         </div>
                     </div>
 
                     <div>
-                        <label class="form-label">Teknologi yang Digunakan</label>
-                        <input type="text" name="technologies_input" id="techInput" class="form-input"
-                               placeholder="Ketik dan tekan Enter...">
-                        <div id="techTags" class="flex flex-wrap gap-2 mt-2"></div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Teknologi yang Digunakan</label>
+                        <input type="text" name="technologies_input" id="techInput"
+                               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all"
+                               placeholder="Ketik teknologi lalu tekan Enter...">
+                        <div id="techTags" class="flex flex-wrap gap-2 mt-3"></div>
                         <div id="techHiddenInputs"></div>
+                        <p class="text-xs text-gray-400 mt-2">Contoh: Laravel, React, Tailwind CSS</p>
                     </div>
                 </div>
 
                 {{-- SEO --}}
-                <div class="admin-card p-6 space-y-4">
-                    <h3 class="font-semibold text-gray-700 border-b pb-3">SEO</h3>
-                    <div>
-                        <label class="form-label">Meta Title <span class="text-xs text-gray-400">(max 60 karakter)</span></label>
-                        <input type="text" name="meta_title" value="{{ old('meta_title') }}" class="form-input" maxlength="60">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
+                        <div class="w-8 h-8 bg-purple-50 rounded-xl flex items-center justify-center">
+                            <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Optimasi SEO</h3>
                     </div>
+
                     <div>
-                        <label class="form-label">Meta Description <span class="text-xs text-gray-400">(max 160 karakter)</span></label>
-                        <textarea name="meta_description" rows="2" class="form-input" maxlength="160">{{ old('meta_description') }}</textarea>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Meta Title</label>
+                        <input type="text" name="meta_title" value="{{ old('meta_title') }}"
+                               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all"
+                               maxlength="60">
+                        <p class="text-xs text-gray-400 mt-1">Maksimal 60 karakter</p>
                     </div>
+
                     <div>
-                        <label class="form-label">Meta Keywords</label>
-                        <input type="text" name="meta_keywords" value="{{ old('meta_keywords') }}" class="form-input" placeholder="keyword1, keyword2, ...">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
+                        <textarea name="meta_description" rows="2"
+                                  class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all resize-none"
+                                  maxlength="160">{{ old('meta_description') }}</textarea>
+                        <p class="text-xs text-gray-400 mt-1">Maksimal 160 karakter</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Meta Keywords</label>
+                        <input type="text" name="meta_keywords" value="{{ old('meta_keywords') }}"
+                               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all"
+                               placeholder="web development, ui/ux, branding">
+                        <p class="text-xs text-gray-400 mt-1">Pisahkan dengan koma (,)</p>
                     </div>
                 </div>
             </div>
 
             {{-- Sidebar --}}
-            <div class="space-y-5">
-                <div class="admin-card p-6 space-y-4">
-                    <h3 class="font-semibold text-gray-700 border-b pb-3">Pengaturan</h3>
-
-                    <div>
-                        <label class="form-label">Status <span class="text-red-500">*</span></label>
-                        <select name="status" class="form-input">
-                            <option value="draft" {{ old('status') === 'draft' ? 'selected' : '' }}>Draft</option>
-                            <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>Published</option>
-                        </select>
-                    </div>
-
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" name="is_featured" id="is_featured" value="1"
-                               {{ old('is_featured') ? 'checked' : '' }}
-                               class="w-4 h-4 text-dotech-blue rounded border-gray-300">
-                        <label for="is_featured" class="text-sm text-gray-700">Tampilkan di Beranda</label>
+            <div class="space-y-6">
+                {{-- Pengaturan --}}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
+                        <div class="w-8 h-8 bg-indigo-50 rounded-xl flex items-center justify-center">
+                            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Pengaturan</h3>
                     </div>
 
                     <div>
-                        <label class="form-label">Featured Image</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <select name="status" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none cursor-pointer">
+                                <option value="draft" {{ old('status') === 'draft' ? 'selected' : '' }}>Draft</option>
+                                <option value="published" {{ old('status') === 'published' ? 'selected' : '' }}>Published</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.363 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.363-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <label for="is_featured" class="text-sm font-medium text-gray-700 cursor-pointer">Tampilkan di Beranda</label>
+                        </div>
+                        <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                            <input type="checkbox" name="is_featured" id="is_featured" value="1"
+                                   {{ old('is_featured') ? 'checked' : '' }}
+                                   class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer">
+                            <label for="is_featured" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Featured Image</label>
                         <div class="mt-1">
-                            <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-dotech-blue transition-colors bg-gray-50" id="imgLabel">
-                                <svg class="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <label class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/20 transition-all duration-200 bg-gray-50/30" id="imgLabel">
+                                <svg class="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
-                                <span class="text-sm text-gray-400">Klik untuk upload</span>
-                                <img id="imgPreview" class="hidden max-h-36 rounded-lg mt-2">
+                                <span class="text-sm text-gray-500">Klik atau drag & drop</span>
+                                <span class="text-xs text-gray-400 mt-1">PNG, JPG, WEBP (max 2MB)</span>
+                                <img id="imgPreview" class="hidden max-h-32 rounded-lg mt-2 object-cover">
                                 <input type="file" name="featured_image" accept="image/*" class="hidden" id="imgInput">
                             </label>
                         </div>
-                        @error('featured_image')<p class="form-error">{{ $message }}</p>@enderror
+                        @error('featured_image')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                     </div>
                 </div>
 
-                <div class="admin-card p-6 space-y-4">
-                    <h3 class="font-semibold text-gray-700 border-b pb-3">Galeri Foto</h3>
-                    <input type="file" name="images[]" multiple accept="image/*" class="form-input text-xs">
-                    <p class="text-xs text-gray-400">Upload beberapa foto sekaligus (jpg, png, webp)</p>
-                </div>
+                {{-- Galeri Foto --}}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
+                        <div class="w-8 h-8 bg-green-50 rounded-xl flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">Galeri Foto</h3>
+                    </div>
 
-                <div class="flex gap-3">
-                    <a href="{{ route('admin.projects.index') }}" class="btn-admin bg-gray-500 hover:bg-gray-600 flex-1 justify-center">
-                        Batal
-                    </a>
-                    <button type="submit" class="btn-admin flex-1 justify-center">
-                        Simpan
-                    </button>
+                    <div>
+                        <input type="file" name="images[]" multiple accept="image/*"
+                               class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
+                        <p class="text-xs text-gray-400 mt-2">Upload beberapa foto sekaligus (jpg, png, webp)</p>
+                    </div>
                 </div>
             </div>
         </div>
     </form>
 </div>
+
+@push('styles')
+<style>
+    .toggle-checkbox:checked {
+        right: 0;
+        border-color: #4f46e5;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+        background-color: #4f46e5;
+    }
+    .toggle-checkbox {
+        right: 0;
+        transition: all 0.3s ease;
+    }
+    .toggle-label {
+        transition: background-color 0.3s ease;
+    }
+</style>
+@endpush
 
 @push('scripts')
 <script>
@@ -141,6 +249,10 @@ document.getElementById('imgInput').addEventListener('change', function(e) {
         const preview = document.getElementById('imgPreview');
         preview.src = e.target.result;
         preview.classList.remove('hidden');
+
+        const label = document.getElementById('imgLabel');
+        label.style.borderColor = '#4f46e5';
+        label.style.backgroundColor = '#eef2ff';
     };
     reader.readAsDataURL(file);
 });
@@ -167,9 +279,14 @@ function renderTags() {
     techTags.innerHTML = '';
     hidden.innerHTML = '';
     techs.forEach((t, i) => {
-        techTags.innerHTML += `<span class="inline-flex items-center gap-1 bg-blue-100 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-full">
-            ${t}<button type="button" onclick="removeTech(${i})" class="text-blue-400 hover:text-red-500">×</button></span>`;
-        hidden.innerHTML += `<input type="hidden" name="technologies[]" value="${t}">`;
+        techTags.innerHTML += `<span class="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 text-indigo-700 text-xs font-medium px-3 py-1.5 rounded-full border border-indigo-100 shadow-sm">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            ${t}
+            <button type="button" onclick="removeTech(${i})" class="ml-1 text-indigo-400 hover:text-red-500 transition-colors">&times;</button>
+        </span>`;
+        hidden.innerHTML += `<input type="hidden" name="technologies[]" value="${t.replace(/"/g, '&quot;')}">`;
     });
 }
 function removeTech(i) { techs.splice(i, 1); renderTags(); }
