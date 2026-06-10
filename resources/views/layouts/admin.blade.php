@@ -68,7 +68,7 @@
                             'route' => 'admin.messages.index',
                             'icon' => 'fas fa-envelope',
                             'label' => 'Pesan Masuk',
-                            'badge' => true,
+                            'badge' => \App\Models\ContactMessage::unread()->count(),
                         ],
                         [
                             'route' => 'admin.users.index',
@@ -151,7 +151,7 @@
                         {{-- Standard Nav Link --}}
                         @php
                             $active = request()->routeIs($item['route'] . '*');
-                            $unread = $item['badge'] ? \App\Models\ContactMessage::unread()->count() : 0;
+                            $badge = $item['badge'] ?: 0;
                         @endphp
                         <a href="{{ route($item['route']) }}"
                             class="{{ $active ? 'bg-gradient-to-r from-dotech-blue to-blue-700 text-white shadow-lg' : 'text-gray-400 hover:bg-white/10 hover:text-white' }}
@@ -159,10 +159,10 @@
                             <i
                                 class="{{ $item['icon'] }} text-base w-5 {{ $active ? 'text-white' : 'text-gray-400 group-hover:text-white transition' }}"></i>
                             <span class="flex-1">{{ $item['label'] }}</span>
-                            @if ($unread > 0)
+                            @if ($badge > 0)
                                 <span
                                     class="bg-red-500 text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center shadow-md">
-                                    {{ $unread > 9 ? '9+' : $unread }}
+                                    {{ $badge > 9 ? '9+' : $badge }}
                                 </span>
                             @endif
                         </a>
