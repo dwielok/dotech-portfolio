@@ -199,7 +199,7 @@
 
             {{-- Top Bar --}}
             <header
-                class="h-16 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center px-6 gap-4 flex-shrink-0 sticky top-0 z-30 shadow-sm">
+                class="h-16 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center px-6 gap-4 flex-shrink-0 sticky !top-0 z-30 shadow-sm">
                 <button @click="sidebarOpen = true"
                     class="lg:hidden w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 transition flex items-center justify-center">
                     <i class="fas fa-bars text-sm"></i>

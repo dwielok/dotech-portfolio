@@ -10,8 +10,14 @@ class ContactMessage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'phone', 'subject',
-        'message', 'is_read', 'ip_address', 'replied_at',
+        'name',
+        'email',
+        'phone',
+        'subject',
+        'message',
+        'is_read',
+        'ip_address',
+        'replied_at',
     ];
 
     protected $casts = [
@@ -24,8 +30,18 @@ class ContactMessage extends Model
         return $query->where('is_read', false);
     }
 
+    public function scopeRead($query)
+    {
+        return $query->where('is_read', true);
+    }
+
     public function markAsRead(): void
     {
         $this->update(['is_read' => true]);
+    }
+
+    public function markAsUnread(): void
+    {
+        $this->update(['is_read' => false]);
     }
 }

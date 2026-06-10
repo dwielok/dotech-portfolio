@@ -46,8 +46,12 @@ Route::prefix('admin')
             ->name('messages.show');
         Route::patch('messages/{message}/read', [Admin\ContactMessageController::class, 'markRead'])
             ->name('messages.read');
+        Route::patch('messages/{message}/unread', [Admin\ContactMessageController::class, 'markUnread'])
+            ->name('messages.unread');
         Route::delete('messages/{message}', [Admin\ContactMessageController::class, 'destroy'])
             ->name('messages.destroy');
+        Route::post('/admin/messages/bulk-mark-read', [Admin\ContactMessageController::class, 'bulkMarkRead'])->name('messages.bulk-mark-read');
+        Route::delete('/admin/messages/bulk-destroy', [Admin\ContactMessageController::class, 'bulkDestroy'])->name('messages.bulk-destroy');
 
         Route::resource('users', Admin\UserController::class);
     });
