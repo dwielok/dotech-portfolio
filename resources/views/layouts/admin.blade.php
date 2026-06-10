@@ -76,91 +76,98 @@
                             'label' => 'Users',
                             'badge' => false,
                         ],
-                    ];
-
-                    $siteSettingsItems = [
-                        ['route' => 'admin.hero-sections.index', 'icon' => 'fas fa-tv', 'label' => 'Hero Section'],
-                        ['route' => 'admin.about-us.index', 'icon' => 'fas fa-building', 'label' => 'About Us'],
+                        // Merged Site Settings inside navItems
                         [
-                            'route' => 'admin.contact-info.index',
-                            'icon' => 'fas fa-address-card',
-                            'label' => 'Kontak Info',
-                        ],
-                        [
-                            'route' => 'admin.social-links.index',
-                            'icon' => 'fas fa-share-alt',
-                            'label' => 'Social Links',
+                            'icon' => 'fas fa-cog',
+                            'label' => 'Site Settings',
+                            'badge' => false,
+                            'children' => [
+                                [
+                                    'route' => 'admin.hero-sections.index',
+                                    'icon' => 'fas fa-tv',
+                                    'label' => 'Hero Section',
+                                ],
+                                ['route' => 'admin.about-us.index', 'icon' => 'fas fa-building', 'label' => 'About Us'],
+                                [
+                                    'route' => 'admin.contact-info.index',
+                                    'icon' => 'fas fa-address-card',
+                                    'label' => 'Kontak Info',
+                                ],
+                                [
+                                    'route' => 'admin.social-links.index',
+                                    'icon' => 'fas fa-share-alt',
+                                    'label' => 'Social Links',
+                                ],
+                            ],
                         ],
                     ];
-
-                    // Check if any site settings route is active
-                    $isSiteSettingsActive = false;
-                    foreach ($siteSettingsItems as $item) {
-                        if (request()->routeIs($item['route'] . '*')) {
-                            $isSiteSettingsActive = true;
-                            break;
-                        }
-                    }
                 @endphp
 
                 @foreach ($navItems as $item)
-                    @php
-                        $active = request()->routeIs($item['route'] . '*');
-                        $unread = $item['badge'] ? \App\Models\ContactMessage::unread()->count() : 0;
-                    @endphp
-                    <a href="{{ route($item['route']) }}"
-                        class="{{ $active ? 'bg-gradient-to-r from-dotech-blue to-blue-700 text-white shadow-lg' : 'text-gray-400 hover:bg-white/10 hover:text-white' }}
-              flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group">
-                        <i
-                            class="{{ $item['icon'] }} text-base w-5 {{ $active ? 'text-white' : 'text-gray-400 group-hover:text-white transition' }}"></i>
-                        <span class="flex-1">{{ $item['label'] }}</span>
-                        @if ($unread > 0)
-                            <span
-                                class="bg-red-500 text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center shadow-md">
-                                {{ $unread > 9 ? '9+' : $unread }}
-                            </span>
-                        @endif
-                    </a>
-                @endforeach
+                    @if (isset($item['children']))
+                        {{-- Dropdown Group --}}
+                        @php
+                            // Check if any child route is currently active
+                            $isGroupActive = collect($item['children'])->contains(function ($child) {
+                                return request()->routeIs($child['route'] . '*');
+                            });
+                        @endphp
 
-                {{-- Site Settings Dropdown --}}
-                @php
-                    $siteSettingsOpen = $isSiteSettingsActive || session('site_settings_open', false);
-                @endphp
-
-                <div x-data="{ open: {{ $siteSettingsOpen ? 'true' : 'false' }} }" class="mt-1">
-                    {{-- Dropdown Toggle Button --}}
-                    <button @click="open = !open"
-                        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group text-gray-400 hover:bg-white/10 hover:text-white">
-                        <i class="fas fa-cog text-base w-5 text-gray-400 group-hover:text-white transition"></i>
-                        <span class="flex-1 text-left">Site Settings</span>
-                        <i class="fas fa-chevron-down text-xs transition-transform duration-200"
-                            :class="{ 'rotate-180': open }"></i>
-                    </button>
-
-                    {{-- Dropdown Menu Items --}}
-                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
-                        x-transition:enter-start="opacity-0 transform -translate-y-2"
-                        x-transition:enter-end="opacity-100 transform translate-y-0"
-                        x-transition:leave="transition ease-in duration-150"
-                        x-transition:leave-start="opacity-100 transform translate-y-0"
-                        x-transition:leave-end="opacity-0 transform -translate-y-2"
-                        class="ml-4 mt-1 space-y-1 border-l border-white/10 pl-3">
-
-                        @foreach ($siteSettingsItems as $item)
-                            @php
-                                $active = request()->routeIs($item['route'] . '*');
-                            @endphp
-                            <a href="{{ route($item['route']) }}"
-                                class="{{ $active ? 'bg-gradient-to-r from-dotech-blue to-blue-700 text-white shadow-lg' : 'text-gray-400 hover:bg-white/10 hover:text-white' }}
-                      flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group">
+                        <div x-data="{ open: {{ $isGroupActive ? 'true' : 'false' }} }" class="mt-1">
+                            {{-- Dropdown Toggle Button --}}
+                            <button @click="open = !open"
+                                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group {{ $isGroupActive ? 'text-white' : 'text-gray-400 hover:bg-white/10 hover:text-white' }}">
                                 <i
-                                    class="{{ $item['icon'] }} text-sm w-5 {{ $active ? 'text-white' : 'text-gray-400 group-hover:text-white transition' }}"></i>
-                                <span class="flex-1">{{ $item['label'] }}</span>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
+                                    class="{{ $item['icon'] }} text-base w-5 {{ $isGroupActive ? 'text-white' : 'text-gray-400 group-hover:text-white transition' }}"></i>
+                                <span class="flex-1 text-left">{{ $item['label'] }}</span>
+                                <i class="fas fa-chevron-down text-xs transition-transform duration-200"
+                                    :class="{ 'rotate-180': open }"></i>
+                            </button>
+
+                            {{-- Dropdown Menu Items --}}
+                            <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 transform -translate-y-2"
+                                x-transition:enter-end="opacity-100 transform translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 transform translate-y-0"
+                                x-transition:leave-end="opacity-0 transform -translate-y-2"
+                                class="ml-4 mt-1 space-y-1 border-l border-white/10 pl-3">
+
+                                @foreach ($item['children'] as $child)
+                                    @php
+                                        $active = request()->routeIs($child['route'] . '*');
+                                    @endphp
+                                    <a href="{{ route($child['route']) }}"
+                                        class="{{ $active ? 'bg-gradient-to-r from-dotech-blue to-blue-700 text-white shadow-lg' : 'text-gray-400 hover:bg-white/10 hover:text-white' }}
+                            flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group">
+                                        <i
+                                            class="{{ $child['icon'] }} text-sm w-5 {{ $active ? 'text-white' : 'text-gray-400 group-hover:text-white transition' }}"></i>
+                                        <span class="flex-1">{{ $child['label'] }}</span>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @else
+                        {{-- Standard Nav Link --}}
+                        @php
+                            $active = request()->routeIs($item['route'] . '*');
+                            $unread = $item['badge'] ? \App\Models\ContactMessage::unread()->count() : 0;
+                        @endphp
+                        <a href="{{ route($item['route']) }}"
+                            class="{{ $active ? 'bg-gradient-to-r from-dotech-blue to-blue-700 text-white shadow-lg' : 'text-gray-400 hover:bg-white/10 hover:text-white' }}
+                flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group">
+                            <i
+                                class="{{ $item['icon'] }} text-base w-5 {{ $active ? 'text-white' : 'text-gray-400 group-hover:text-white transition' }}"></i>
+                            <span class="flex-1">{{ $item['label'] }}</span>
+                            @if ($unread > 0)
+                                <span
+                                    class="bg-red-500 text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center shadow-md">
+                                    {{ $unread > 9 ? '9+' : $unread }}
+                                </span>
+                            @endif
+                        </a>
+                    @endif
+                @endforeach
             </nav>
 
             {{-- User info with gradient --}}
