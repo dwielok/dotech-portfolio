@@ -184,10 +184,10 @@
                 <table class="w-full">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-100">
-                            <th
-                                class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-10">
-                                <input type="checkbox" id="bulkCheckbox" style="display: none;"
-                                    class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-10"
+                                id="thCheckbox" style="display: none;">
+                                {{-- <input type="checkbox" id="bulkCheckbox" style="display: none;"
+                                    class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"> --}}
                             </th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                 Pengirim</th>
@@ -207,11 +207,13 @@
                         @forelse($messages as $message)
                             <tr
                                 class="hover:bg-gray-50/50 transition-colors group {{ !$message->is_read ? 'bg-blue-50/30' : '' }}">
-                                <td class="px-6 py-4">
+
+                                <td class="px-6 py-4" id="tblCheckbox" style="display: none;">
                                     <input type="checkbox" name="message_ids[]" value="{{ $message->id }}"
                                         class="message-checkbox bulk-checkbox w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                                         style="display: none;">
                                 </td>
+
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div class="relative">
@@ -220,7 +222,7 @@
                                                 {{ strtoupper(substr($message->name, 0, 1)) }}
                                             </div>
                                             @if (!$message->is_read)
-                                                <span class="absolute -top-1 -right-1 relative flex h-3 w-3">
+                                                <span class="absolute -top-1 -right-1 flex h-3 w-3">
                                                     <span
                                                         class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                                                     <span
@@ -553,9 +555,14 @@
             function toggleBulkMode() {
                 bulkMode = !bulkMode;
                 const checkboxes = document.querySelectorAll('.bulk-checkbox');
+                const tblCheckbox = document.getElementById('tblCheckbox');
+                const thCheckbox = document.getElementById('thCheckbox');
                 const bulkCheckbox = document.getElementById('bulkCheckbox');
                 const bulkActionsBar = document.getElementById('bulkActionsBar');
                 const bulkModeBtn = document.getElementById('bulkModeBtn');
+
+                tblCheckbox.style.display = bulkMode ? 'inline-block' : 'none';
+                thCheckbox.style.display = bulkMode ? 'inline-block' : 'none';
 
                 checkboxes.forEach(checkbox => {
                     checkbox.style.display = bulkMode ? 'inline-block' : 'none';
