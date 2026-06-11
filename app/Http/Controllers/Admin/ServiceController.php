@@ -13,7 +13,11 @@ class ServiceController extends Controller
     {
         $services = Service::orderBy('sort_order')
             ->when($request->search, fn($q) => $q->where('title', 'like', "%{$request->search}%"))
+            ->when($request->has('is_active') && $request->is_active !== '', function($q) use ($request) {
+                $q->where('is_active', $request->is_active);
+            })
             ->paginate(10);
+
 
         return view('admin.services.index', compact('services'));
     }
