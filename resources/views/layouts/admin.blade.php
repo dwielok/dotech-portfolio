@@ -443,14 +443,14 @@
                             </div>
 
                             {{-- Footer (if there are notifications) --}}
-                            {{-- @if ($notifications->count() > 0)
+                            @if ($notifications->count() > 0)
                                 <div class="border-t border-gray-100 px-5 py-3 bg-gray-50/50">
                                     <a href="{{ route('admin.notifications.index') }}"
                                         class="text-xs text-center block text-gray-500 hover:text-dotech-blue transition-colors">
                                         Lihat semua notifikasi
                                     </a>
                                 </div>
-                            @endif --}}
+                            @endif
                         </div>
                     </div>
 
