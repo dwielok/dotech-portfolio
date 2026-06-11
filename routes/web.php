@@ -35,7 +35,11 @@ Route::prefix('admin')
         Route::resource('projects', Admin\ProjectController::class);
         Route::delete('projects/{project}/images/{image}', [Admin\ProjectController::class, 'destroyImage'])
             ->name('projects.images.destroy');
+
         Route::resource('services', Admin\ServiceController::class);
+        Route::post('/services/{service}/move-up', [Admin\ServiceController::class, 'moveUp'])->name('services.move-up');
+        Route::post('/services/{service}/move-down', [Admin\ServiceController::class, 'moveDown'])->name('services.move-down');
+
         Route::resource('testimonials', Admin\TestimonialController::class);
         Route::resource('contact-info', Admin\ContactInformationController::class)->parameters(['contact-info' => 'contactInfo']);
         Route::resource('social-links', Admin\SocialLinkController::class);
