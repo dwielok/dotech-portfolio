@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Tambah Layanan')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-0">
@@ -66,7 +67,7 @@
                                    class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all font-mono"
                                    placeholder="Contoh: 🚀, 💻, 📱, atau kode icon">
                             <div class="absolute right-3 top-1/2 -translate-y-1/2 text-2xl">
-                                {{ old('icon') ?: '' }}
+                                {{ old('icon') ?: '📦' }}
                             </div>
                         </div>
                         <p class="text-xs text-gray-400 mt-1">Gunakan emoji atau kode icon (FontAwesome, Bootstrap Icons, dll)</p>
