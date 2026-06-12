@@ -58,6 +58,12 @@ class TestimonialController extends Controller
 
         Testimonial::create($data);
 
+        // Using helper
+        // NotificationHelper::send('message', [
+        //     'name' => 'John Doe',
+        //     'subject' => 'Info Produk'
+        // ]);
+
         return redirect()
             ->route('admin.testimonials.index')
             ->with('success', 'Testimonial berhasil ditambahkan.');

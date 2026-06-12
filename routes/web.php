@@ -35,7 +35,11 @@ Route::prefix('admin')
         Route::resource('projects', Admin\ProjectController::class);
         Route::delete('projects/{project}/images/{image}', [Admin\ProjectController::class, 'destroyImage'])
             ->name('projects.images.destroy');
+
         Route::resource('services', Admin\ServiceController::class);
+        Route::post('/services/{service}/move-up', [Admin\ServiceController::class, 'moveUp'])->name('services.move-up');
+        Route::post('/services/{service}/move-down', [Admin\ServiceController::class, 'moveDown'])->name('services.move-down');
+
         Route::resource('testimonials', Admin\TestimonialController::class);
         Route::resource('contact-info', Admin\ContactInformationController::class)->parameters(['contact-info' => 'contactInfo']);
         Route::resource('social-links', Admin\SocialLinkController::class);
@@ -54,4 +58,11 @@ Route::prefix('admin')
         Route::delete('/admin/messages/bulk-destroy', [Admin\ContactMessageController::class, 'bulkDestroy'])->name('messages.bulk-destroy');
 
         Route::resource('users', Admin\UserController::class);
+
+        Route::get('/notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
+        Route::patch('/notifications/{notification}/mark-as-read', [App\Http\Controllers\Admin\NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+        Route::post('/notifications/mark-all-read', [App\Http\Controllers\Admin\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+        Route::get('/notifications/unread-count', [App\Http\Controllers\Admin\NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
+        Route::delete('/notifications/{notification}', [App\Http\Controllers\Admin\NotificationController::class, 'destroy'])->name('notifications.destroy');
+        Route::delete('/notifications/read/all', [App\Http\Controllers\Admin\NotificationController::class, 'destroyAllRead'])->name('notifications.destroy-all-read');
     });
