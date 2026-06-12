@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Tambah Layanan')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-0">
