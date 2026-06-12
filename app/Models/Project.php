@@ -12,10 +12,21 @@ class Project extends Model
     use HasFactory, HasSlug;
 
     protected $fillable = [
-        'title', 'slug', 'short_description', 'full_description',
-        'client_name', 'project_date', 'project_url', 'featured_image',
-        'category', 'technologies', 'status', 'is_featured',
-        'meta_title', 'meta_description', 'meta_keywords',
+        'title',
+        'slug',
+        'short_description',
+        'full_description',
+        'client_name',
+        'project_date',
+        'project_url',
+        'featured_image',
+        'category',
+        'technologies',
+        'status',
+        'is_featured',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
     ];
 
     protected $casts = [
@@ -28,8 +39,7 @@ class Project extends Model
     {
         return SlugOptions::create()
             ->generateSlugsFrom('title')
-            ->saveSlugsTo('slug')
-            ->doNotGenerateSlugsOnUpdate();
+            ->saveSlugsTo('slug');
     }
 
     public function getRouteKeyName(): string
