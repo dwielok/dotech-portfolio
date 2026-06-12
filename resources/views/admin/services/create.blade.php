@@ -163,7 +163,7 @@
                             <p class="text-xs text-gray-400 mt-1">Semakin kecil angka, semakin atas posisinya</p>
                         </div>
 
-                        <div
+                        {{-- <div
                             class="flex items-center justify-between p-3 bg-gradient-to-r from-amber-50 to-yellow-50 rounded-xl">
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
@@ -181,7 +181,7 @@
                                 <label for="is_featured"
                                     class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"></label>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     {{-- Preview Card --}}
