@@ -24,11 +24,12 @@ class ContactController extends Controller
 
     public function store(StoreContactMessageRequest $request)
     {
-        $this->contactService->store($request->validated());
+        $msg = $this->contactService->store($request->validated());
 
-        NotificationHelper::send('message', [
-            'name' => 'John Doe',
-            'subject' => 'Info Produk'
+        NotificationHelper::send('contact', [
+            'id' => $msg->id,
+            'name' => $msg->name,
+            'subject' => $msg->subject,
         ]);
 
         return redirect()->route('contact')
