@@ -21,7 +21,7 @@ class SiteSettingController extends Controller
         $hero = HeroSection::first() ?? new HeroSection(['is_active' => true]);
         $about = AboutUs::first() ?? new AboutUs(['is_active' => true]);
         $contact = ContactInformation::first() ?? new ContactInformation(['is_active' => true]);
-        $socialLinks = SocialLink::active()->get();
+        $socialLinks = SocialLink::get();
 
         return view('admin.site-settings.index', compact('hero', 'about', 'contact', 'socialLinks'));
     }
