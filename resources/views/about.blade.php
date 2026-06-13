@@ -86,7 +86,7 @@
                         <i class="fas fa-calendar-alt text-blue-400 text-sm"></i>
                     </div>
                     <div>
-                        <span class="text-white font-bold">Est. 2016</span>
+                        <span class="text-white font-bold">Est. {{ $about->years_experience }}</span>
                         <span class="text-gray-400 text-xs block">Since</span>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                         <i class="fas fa-users text-green-400 text-sm"></i>
                     </div>
                     <div>
-                        <span class="text-white font-bold">150+</span>
+                        <span class="text-white font-bold">{{ $about->happy_clients }}</span>
                         <span class="text-gray-400 text-xs block">Clients</span>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                         <i class="fas fa-rocket text-purple-400 text-sm"></i>
                     </div>
                     <div>
-                        <span class="text-white font-bold">250+</span>
+                        <span class="text-white font-bold">{{ $about->projects_completed }}</span>
                         <span class="text-gray-400 text-xs block">Projects</span>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
                         </h2>
                         <div class="prose prose-lg text-gray-600 space-y-4">
                             @if ($about->description)
-                                {!! nl2br(e($about->description)) !!}
+                                {!! $about->description !!}
                             @else
                                 <p>PT Dotech Digital Solution berdiri sejak tahun 2016 dengan visi menjadi perusahaan
                                     teknologi terdepan yang membantu bisnis di Indonesia bertransformasi secara digital.
@@ -184,14 +184,14 @@
                                     <div class="bg-blue-50 rounded-xl p-4">
                                         <i class="fas fa-eye text-dotech-blue text-2xl mb-2"></i>
                                         <h3 class="font-bold text-gray-900">Visi</h3>
-                                        <p class="text-sm text-gray-600 mt-1">{{ $about->vision }}</p>
+                                        <p class="text-sm text-gray-600 mt-1">{!! $about->vision !!}</p>
                                     </div>
                                 @endif
                                 @if ($about->mission)
                                     <div class="bg-blue-50 rounded-xl p-4">
                                         <i class="fas fa-bullseye text-dotech-blue text-2xl mb-2"></i>
                                         <h3 class="font-bold text-gray-900">Misi</h3>
-                                        <p class="text-sm text-gray-600 mt-1">{{ $about->mission }}</p>
+                                        <p class="text-sm text-gray-600 mt-1">{!! $about->mission !!}</p>
                                     </div>
                                 @endif
                             </div>
@@ -227,7 +227,8 @@
                         <div class="text-sm text-gray-300 mt-2">Klien Puas</div>
                     </div>
                     <div class="stat-card">
-                        <div class="text-4xl md:text-5xl font-extrabold text-dotech-blue">{{ $about->expert_team ?? '50' }}+
+                        <div class="text-4xl md:text-5xl font-extrabold text-dotech-blue">
+                            {{ $about->expert_team ?? '50' }}+
                         </div>
                         <div class="text-sm text-gray-300 mt-2">Tim Ahli</div>
                     </div>
@@ -392,7 +393,7 @@
                     @foreach ($socialLinks as $social)
                         <a href="{{ $social->url }}" target="_blank" rel="noopener noreferrer"
                             class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-dotech-blue transition-all duration-300 group">
-                            {!! $social->icon !!}
+                            <i class="{{ $social->icon }}"></i>
                         </a>
                     @endforeach
                 </div>

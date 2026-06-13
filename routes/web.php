@@ -65,4 +65,14 @@ Route::prefix('admin')
         Route::get('/notifications/unread-count', [App\Http\Controllers\Admin\NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
         Route::delete('/notifications/{notification}', [App\Http\Controllers\Admin\NotificationController::class, 'destroy'])->name('notifications.destroy');
         Route::delete('/notifications/read/all', [App\Http\Controllers\Admin\NotificationController::class, 'destroyAllRead'])->name('notifications.destroy-all-read');
+
+        Route::get('/site-settings', [Admin\SiteSettingController::class, 'index'])->name('site-settings.index');
+        Route::put('/site-settings/hero', [Admin\SiteSettingController::class, 'updateHero'])->name('site-settings.hero.update');
+        Route::put('/site-settings/about', [Admin\SiteSettingController::class, 'updateAbout'])->name('site-settings.about.update');
+        Route::put('/site-settings/contact', [Admin\SiteSettingController::class, 'updateContact'])->name('site-settings.contact.update');
+        Route::post('/site-settings/social-links', [Admin\SiteSettingController::class, 'storeSocialLink'])->name('site-settings.social-links.store');
+        Route::put('/site-settings/social-links/{socialLink}', [Admin\SiteSettingController::class, 'updateSocialLink'])->name('site-settings.social-links.update');
+        Route::delete('/site-settings/social-links/{socialLink}', [Admin\SiteSettingController::class, 'destroySocialLink'])->name('site-settings.social-links.destroy');
+        Route::post('/site-settings/social-links/reorder', [Admin\SiteSettingController::class, 'reorderSocialLinks'])->name('site-settings.social-links.reorder');
+        Route::post('/site-settings/upload-image', [Admin\SiteSettingController::class, 'uploadImage'])->name('site-settings.upload-image');
     });

@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tiny.cloud/1/{{ env('TINYMCE_API_KEY') }}/tinymce/6/tinymce.min.js" referrerpolicy="origin">
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
     <style>
@@ -144,28 +146,35 @@
                             'badge' => false,
                         ],
                         // Merged Site Settings inside navItems
+                        // [
+                        //     'icon' => 'fas fa-cog',
+                        //     'label' => 'Site Settings',
+                        //     'badge' => false,
+                        //     'children' => [
+                        //         [
+                        //             'route' => 'admin.hero-sections.index',
+                        //             'icon' => 'fas fa-tv',
+                        //             'label' => 'Hero Section',
+                        //         ],
+                        //         ['route' => 'admin.about-us.index', 'icon' => 'fas fa-building', 'label' => 'About Us'],
+                        //         [
+                        //             'route' => 'admin.contact-info.index',
+                        //             'icon' => 'fas fa-address-card',
+                        //             'label' => 'Kontak Info',
+                        //         ],
+                        //         [
+                        //             'route' => 'admin.social-links.index',
+                        //             'icon' => 'fas fa-share-alt',
+                        //             'label' => 'Social Links',
+                        //         ],
+                        //     ],
+                        // ],
+                        // Replace the Site Settings dropdown section with:
                         [
-                            'icon' => 'fas fa-cog',
-                            'label' => 'Site Settings',
+                            'route' => 'admin.site-settings.index',
+                            'icon' => 'fas fa-code',
+                            'label' => 'Pengaturan Website',
                             'badge' => false,
-                            'children' => [
-                                [
-                                    'route' => 'admin.hero-sections.index',
-                                    'icon' => 'fas fa-tv',
-                                    'label' => 'Hero Section',
-                                ],
-                                ['route' => 'admin.about-us.index', 'icon' => 'fas fa-building', 'label' => 'About Us'],
-                                [
-                                    'route' => 'admin.contact-info.index',
-                                    'icon' => 'fas fa-address-card',
-                                    'label' => 'Kontak Info',
-                                ],
-                                [
-                                    'route' => 'admin.social-links.index',
-                                    'icon' => 'fas fa-share-alt',
-                                    'label' => 'Social Links',
-                                ],
-                            ],
                         ],
                     ];
                 @endphp
