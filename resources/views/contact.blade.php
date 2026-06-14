@@ -3,7 +3,7 @@
 @section('title', 'Hubungi Kami — PT Dotech Digital Solution')
 
 @section('content')
-    <div class="pt-20">
+    <div>
         {{-- Hero Section with Animations --}}
         <div class="relative bg-gradient-to-br from-dotech-dark via-blue-900 to-blue-950 text-white overflow-hidden">
             {{-- Animated Background Grid --}}
@@ -35,7 +35,7 @@
                 <i class="fab fa-linkedin text-5xl text-blue-500"></i>
             </div>
 
-            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
                 <div class="text-center">
                     {{-- Animated Badge --}}
                     <div
