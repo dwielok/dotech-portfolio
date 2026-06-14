@@ -336,7 +336,7 @@
     {{-- Jika Anda memiliki model Team, bisa ditambahkan di sini --}}
 
     {{-- ─── TESTIMONIALS SECTION ─── --}}
-    @if ($testimonials->isNotEmpty())
+    {{-- @if ($testimonials->isNotEmpty())
         <section class="py-20 bg-gray-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
@@ -380,7 +380,7 @@
                 </div>
             </div>
         </section>
-    @endif
+    @endif --}}
 
     {{-- ─── SOCIAL LINKS & CONTACT CTA ─── --}}
     <section class="py-16 bg-gradient-to-r from-dotech-blue to-blue-700 text-white">

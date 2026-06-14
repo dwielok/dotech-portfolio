@@ -6,7 +6,10 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProjectRequest extends FormRequest
 {
-    public function authorize(): bool { return $this->user()->is_admin; }
+    public function authorize(): bool
+    {
+        return $this->user()->is_admin;
+    }
 
     public function rules(): array
     {
@@ -28,5 +31,12 @@ class UpdateProjectRequest extends FormRequest
             'meta_keywords'     => 'nullable|string|max:255',
             'images.*'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_featured' => $this->boolean('is_featured'),
+        ]);
     }
 }

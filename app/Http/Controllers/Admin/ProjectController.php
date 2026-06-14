@@ -22,7 +22,7 @@ class ProjectController extends Controller
 
         if ($search = $request->get('search')) {
             $query->where('title', 'like', "%{$search}%")
-                  ->orWhere('client_name', 'like', "%{$search}%");
+                ->orWhere('client_name', 'like', "%{$search}%");
         }
 
         if ($status = $request->get('status')) {
@@ -47,7 +47,8 @@ class ProjectController extends Controller
 
         if ($request->hasFile('featured_image')) {
             $data['featured_image'] = $this->imageService->upload(
-                $request->file('featured_image'), 'projects'
+                $request->file('featured_image'),
+                'projects'
             );
         }
 
@@ -81,7 +82,8 @@ class ProjectController extends Controller
         if ($request->hasFile('featured_image')) {
             $this->imageService->delete($project->featured_image);
             $data['featured_image'] = $this->imageService->upload(
-                $request->file('featured_image'), 'projects'
+                $request->file('featured_image'),
+                'projects'
             );
         }
 

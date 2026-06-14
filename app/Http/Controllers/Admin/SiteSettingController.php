@@ -8,6 +8,7 @@ use App\Models\HeroSection;
 use App\Models\AboutUs;
 use App\Models\ContactInformation;
 use App\Models\SocialLink;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,9 +22,10 @@ class SiteSettingController extends Controller
         $hero = HeroSection::first() ?? new HeroSection(['is_active' => true]);
         $about = AboutUs::first() ?? new AboutUs(['is_active' => true]);
         $contact = ContactInformation::first() ?? new ContactInformation(['is_active' => true]);
-        $socialLinks = SocialLink::get();
+        $socialLinks = SocialLink::active()->get();
+        $teams = Team::ordered()->get();
 
-        return view('admin.site-settings.index', compact('hero', 'about', 'contact', 'socialLinks'));
+        return view('admin.site-settings.index', compact('hero', 'about', 'contact', 'socialLinks', 'teams'));
     }
 
     /**
@@ -41,6 +43,7 @@ class SiteSettingController extends Controller
             'cta_secondary_url' => 'nullable|string|max:255',
             'background_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'is_active' => 'boolean',
+            'remove_image' => 'nullable|in:1',
         ]);
 
         $hero = HeroSection::first();
@@ -49,8 +52,17 @@ class SiteSettingController extends Controller
             $hero = new HeroSection();
         }
 
+        // Handle image removal
+        if ($request->remove_image == '1') {
+            if ($hero->background_image && Storage::disk('public')->exists($hero->background_image)) {
+                Storage::disk('public')->delete($hero->background_image);
+            }
+            $validated['background_image'] = null;
+        }
+
+        // Handle new image upload
         if ($request->hasFile('background_image')) {
-            // Delete old image
+            // Delete old image if exists
             if ($hero->background_image && Storage::disk('public')->exists($hero->background_image)) {
                 Storage::disk('public')->delete($hero->background_image);
             }
@@ -60,6 +72,24 @@ class SiteSettingController extends Controller
         }
 
         $validated['is_active'] = $request->has('is_active');
+
+        // Convert route names to actual URLs if needed
+        if (!empty($validated['cta_primary_url']) && !str_starts_with($validated['cta_primary_url'], '/') && !str_starts_with($validated['cta_primary_url'], 'http')) {
+            // Check if it's a named route
+            try {
+                $validated['cta_primary_url'] = route($validated['cta_primary_url']);
+            } catch (\Exception $e) {
+                // Keep as is if not a valid route
+            }
+        }
+
+        if (!empty($validated['cta_secondary_url']) && !str_starts_with($validated['cta_secondary_url'], '/') && !str_starts_with($validated['cta_secondary_url'], 'http')) {
+            try {
+                $validated['cta_secondary_url'] = route($validated['cta_secondary_url']);
+            } catch (\Exception $e) {
+                // Keep as is if not a valid route
+            }
+        }
 
         $hero->fill($validated);
         $hero->save();
@@ -226,5 +256,191 @@ class SiteSettingController extends Controller
         $url = asset('storage/' . $path);
 
         return response()->json(['location' => $url]);
+    }
+
+    /**
+     * Store a new team member.
+     */
+    public function storeTeam(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'image_alt' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
+            'expertise' => 'nullable|array',
+            'expertise.*' => 'string|max:100',
+            'experience_years' => 'nullable|integer|min:0',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'facebook' => 'nullable|url|max:255',
+            'instagram' => 'nullable|url|max:255',
+            'linkedin' => 'nullable|url|max:255',
+            'twitter' => 'nullable|url|max:255',
+            'sort_order' => 'nullable|integer',
+            'is_active' => 'boolean',
+            'is_featured' => 'boolean',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+        ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('teams', 'public');
+            $validated['image'] = $path;
+        }
+
+        // Collect social links
+        $socialLinks = [];
+        $socialPlatforms = ['facebook', 'instagram', 'linkedin', 'twitter'];
+        foreach ($socialPlatforms as $platform) {
+            if ($request->filled($platform)) {
+                $socialLinks[$platform] = $request->$platform;
+            }
+        }
+        $validated['social_links'] = $socialLinks;
+
+        // Handle expertise as array
+        if ($request->has('expertise')) {
+            $validated['expertise'] = array_filter($request->expertise);
+        }
+
+        $validated['is_active'] = $request->has('is_active');
+        $validated['is_featured'] = $request->has('is_featured');
+        $validated['sort_order'] = $validated['sort_order'] ?? Team::count() + 1;
+
+        Team::create($validated);
+
+        return redirect()->route('admin.site-settings.index', ['tab' => 'teams'])
+            ->with('success', 'Team member berhasil ditambahkan.');
+    }
+
+    /**
+     * Update a team member.
+     */
+    public function updateTeam(Request $request, Team $team)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'image_alt' => 'nullable|string|max:255',
+            'bio' => 'nullable|string',
+            'expertise' => 'nullable|array',
+            'expertise.*' => 'string|max:100',
+            'experience_years' => 'nullable|integer|min:0',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:50',
+            'facebook' => 'nullable|url|max:255',
+            'instagram' => 'nullable|url|max:255',
+            'linkedin' => 'nullable|url|max:255',
+            'twitter' => 'nullable|url|max:255',
+            'sort_order' => 'nullable|integer',
+            'is_active' => 'boolean',
+            'is_featured' => 'boolean',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+        ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($team->image && Storage::disk('public')->exists($team->image)) {
+                Storage::disk('public')->delete($team->image);
+            }
+
+            $path = $request->file('image')->store('teams', 'public');
+            $validated['image'] = $path;
+        }
+
+        // Collect social links
+        $socialLinks = [];
+        $socialPlatforms = ['facebook', 'instagram', 'linkedin', 'twitter'];
+        foreach ($socialPlatforms as $platform) {
+            if ($request->filled($platform)) {
+                $socialLinks[$platform] = $request->$platform;
+            }
+        }
+        $validated['social_links'] = $socialLinks;
+
+        // Handle expertise as array
+        if ($request->has('expertise')) {
+            $validated['expertise'] = array_filter($request->expertise);
+        }
+
+        $validated['is_active'] = $request->has('is_active');
+        $validated['is_featured'] = $request->has('is_featured');
+
+        $team->update($validated);
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->route('admin.site-settings.index', ['tab' => 'teams'])
+            ->with('success', 'Team member berhasil diperbarui.');
+    }
+
+    /**
+     * Delete a team member.
+     */
+    public function destroyTeam(Team $team)
+    {
+        // Delete image
+        if ($team->image && Storage::disk('public')->exists($team->image)) {
+            Storage::disk('public')->delete($team->image);
+        }
+
+        $team->delete();
+
+        if (request()->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->route('admin.site-settings.index', ['tab' => 'teams'])
+            ->with('success', 'Team member berhasil dihapus.');
+    }
+
+    /**
+     * Reorder team members.
+     */
+    public function reorderTeams(Request $request)
+    {
+        $request->validate([
+            'orders' => 'required|array',
+            'orders.*' => 'required|integer|exists:teams,id',
+        ]);
+
+        foreach ($request->orders as $index => $id) {
+            Team::where('id', $id)->update(['sort_order' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Get team member data for editing.
+     */
+    public function editTeam(Team $team)
+    {
+        return response()->json([
+            'id' => $team->id,
+            'name' => $team->name,
+            'title' => $team->title,
+            'image_url' => $team->image_url,
+            'image_alt' => $team->image_alt,
+            'bio' => $team->bio,
+            'expertise' => $team->expertise_list,
+            'experience_years' => $team->experience_years,
+            'email' => $team->email,
+            'phone' => $team->phone,
+            'social_links' => $team->social_links,
+            'sort_order' => $team->sort_order,
+            'is_active' => $team->is_active,
+            'is_featured' => $team->is_featured,
+            'meta_title' => $team->meta_title,
+            'meta_description' => $team->meta_description,
+        ]);
     }
 }

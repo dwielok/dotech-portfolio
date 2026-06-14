@@ -75,4 +75,11 @@ Route::prefix('admin')
         Route::delete('/site-settings/social-links/{socialLink}', [Admin\SiteSettingController::class, 'destroySocialLink'])->name('site-settings.social-links.destroy');
         Route::post('/site-settings/social-links/reorder', [Admin\SiteSettingController::class, 'reorderSocialLinks'])->name('site-settings.social-links.reorder');
         Route::post('/site-settings/upload-image', [Admin\SiteSettingController::class, 'uploadImage'])->name('site-settings.upload-image');
+
+        // Teams Routes
+        Route::post('/site-settings/teams', [Admin\SiteSettingController::class, 'storeTeam'])->name('site-settings.teams.store');
+        Route::put('/site-settings/teams/{team}', [Admin\SiteSettingController::class, 'updateTeam'])->name('site-settings.teams.update');
+        Route::delete('/site-settings/teams/{team}', [Admin\SiteSettingController::class, 'destroyTeam'])->name('site-settings.teams.destroy');
+        Route::post('/site-settings/teams/reorder', [Admin\SiteSettingController::class, 'reorderTeams'])->name('site-settings.teams.reorder');
+        Route::get('/site-settings/teams/{team}/edit', [Admin\SiteSettingController::class, 'editTeam'])->name('admin.site-settings.teams.edit');
     });
