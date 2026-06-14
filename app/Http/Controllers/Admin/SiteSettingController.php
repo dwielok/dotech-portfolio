@@ -33,7 +33,11 @@ class SiteSettingController extends Controller
                 return $name
                     && !str_starts_with($name, 'admin.')
                     && !str_starts_with($name, 'debugbar.')
-                    && !str_starts_with($name, 'ignition.');
+                    && !str_starts_with($name, 'ignition.')
+                    && !str_starts_with($name, 'password.')
+                    && !str_starts_with($name, 'storage.')
+                    && !str_starts_with($name, 'verification.')
+                    && !str_ends_with($name, '.store');
             })
             ->map(function ($route) {
                 return [
