@@ -100,7 +100,9 @@
                     <i class="fas fa-code text-white text-lg"></i>
                 </div>
                 <div>
-                    <img src="{{ asset('images/logo_dotech.png') }}" alt="Dotech" class="h-7 w-auto brightness-200">
+                    <h1 class="text-large font-extrabold tracking-tight text-white">
+                        Dotech
+                    </h1>
                     <p class="text-[10px] text-blue-300/70 mt-0.5">Admin Panel</p>
                 </div>
             </div>

@@ -3,7 +3,7 @@
 @section('title', 'Proyek Kami — PT Dotech Digital Solution')
 
 @section('content')
-    <div class="pt-20">
+    <div>
         {{-- Page Header with enhanced animations --}}
         <div class="relative bg-gradient-to-br from-dotech-dark via-blue-900 to-blue-950 text-white overflow-hidden">
             {{-- Animated Background Grid --}}

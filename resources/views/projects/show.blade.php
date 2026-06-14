@@ -5,7 +5,7 @@
 @section('meta_keywords', $project->meta_keywords)
 
 @section('content')
-    <div class="pt-20">
+    <div>
         {{-- Hero Section with Animations --}}
         <div class="relative bg-gradient-to-br from-dotech-dark via-blue-900 to-blue-950 text-white overflow-hidden">
             {{-- Animated Background Grid --}}
@@ -37,7 +37,7 @@
                 <i class="fas fa-database text-5xl text-green-400"></i>
             </div>
 
-            <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
                 {{-- Breadcrumb --}}
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-6 animate-slide-down">
                     <a href="{{ route('home') }}" class="hover:text-white transition">Beranda</a>
