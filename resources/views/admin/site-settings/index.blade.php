@@ -15,6 +15,11 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="border-b border-gray-100">
                 <nav class="flex space-x-1 px-4 pt-3">
+                    <button onclick="switchTab('identity')" id="tab-identity-btn"
+                        class="tab-btn px-5 py-2.5 rounded-t-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 text-gray-500 hover:text-gray-700 hover:bg-gray-50">
+                        <i class="fas fa-globe text-sm"></i>
+                        <span>Site Identity</span>
+                    </button>
                     <button onclick="switchTab('hero')" id="tab-hero-btn"
                         class="tab-btn px-5 py-2.5 rounded-t-xl text-sm font-medium transition-all duration-200 flex items-center gap-2 bg-gradient-to-r from-dotech-blue to-blue-600 text-white shadow-md">
                         <i class="fas fa-tv text-sm"></i>
@@ -648,6 +653,235 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Site Identity Tab --}}
+                <div id="tab-identity" class="tab-content" style="display: none;">
+                    <div class="space-y-6">
+                        {{-- Basic Information --}}
+                        <form action="{{ route('admin.site-settings.identity.update') }}" method="POST"
+                            enctype="multipart/form-data" class="space-y-6">
+                            @csrf
+                            @method('PUT')
+
+                            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                                <div>
+                                    <h2 class="text-lg font-semibold text-gray-800">Site Identity</h2>
+                                    <p class="text-sm text-gray-500 mt-0.5">Atur identitas dasar website Anda</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="is_active" value="1" class="sr-only peer"
+                                        {{ $siteIdentity->is_active ? 'checked' : '' }}>
+                                    <div
+                                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-dotech-blue">
+                                    </div>
+                                    <span class="ml-3 text-sm font-medium text-gray-700">Aktif</span>
+                                </label>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Site Name</label>
+                                    <input type="text" name="site_name"
+                                        value="{{ old('site_name', $siteIdentity->site_name) }}"
+                                        class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Site Title (Meta
+                                        Title)</label>
+                                    <input type="text" name="site_title"
+                                        value="{{ old('site_title', $siteIdentity->site_title) }}"
+                                        placeholder="PT Dotech Digital Solution - IT Solutions"
+                                        class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Site Description (Meta
+                                    Description)</label>
+                                <textarea name="site_description" rows="3"
+                                    class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">{{ old('site_description', $siteIdentity->site_description) }}</textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Logo Dark (untuk
+                                        background
+                                        terang)</label>
+                                    @if ($siteIdentity->logo_dark_url)
+                                        <div class="mb-3 p-3 bg-gray-50 rounded-xl flex items-center gap-3">
+                                            <img src="{{ $siteIdentity->logo_dark_url }}" alt="Logo Dark"
+                                                class="h-12 object-contain">
+                                            <div class="flex-1">
+                                                <p class="text-sm text-gray-600">Current logo dark</p>
+                                                <button type="button" onclick="confirmDeleteLogo('dark')"
+                                                    class="text-xs text-red-600 hover:text-red-700 mt-1">Hapus
+                                                    logo</button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="remove_logo_dark" id="remove_logo_dark"
+                                            value="0">
+                                    @endif
+                                    <input type="file" name="logo_dark" accept="image/*"
+                                        class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    <p class="text-xs text-gray-400 mt-1">Format: PNG, JPG, SVG. Max: 2MB. Rekomendasi:
+                                        200x60px</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Logo Light (untuk
+                                        background
+                                        gelap)</label>
+                                    @if ($siteIdentity->logo_light_url)
+                                        <div class="mb-3 p-3 bg-gray-800 rounded-xl flex items-center gap-3">
+                                            <img src="{{ $siteIdentity->logo_light_url }}" alt="Logo Light"
+                                                class="h-12 object-contain brightness-200">
+                                            <div class="flex-1">
+                                                <p class="text-sm text-gray-300">Current logo light</p>
+                                                <button type="button" onclick="confirmDeleteLogo('light')"
+                                                    class="text-xs text-red-400 hover:text-red-300 mt-1">Hapus
+                                                    logo</button>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="remove_logo_light" id="remove_logo_light"
+                                            value="0">
+                                    @endif
+                                    <input type="file" name="logo_light" accept="image/*"
+                                        class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                    <p class="text-xs text-gray-400 mt-1">Format: PNG, JPG, SVG. Max: 2MB. Rekomendasi:
+                                        200x60px</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Favicon</label>
+                                @if ($siteIdentity->favicon_url)
+                                    <div class="mb-3 p-3 bg-gray-50 rounded-xl flex items-center gap-3">
+                                        <img src="{{ $siteIdentity->favicon_url }}" alt="Favicon"
+                                            class="w-10 h-10 object-contain">
+                                        <div class="flex-1">
+                                            <p class="text-sm text-gray-600">Current favicon</p>
+                                            <button type="button" onclick="confirmDeleteFavicon()"
+                                                class="text-xs text-red-600 hover:text-red-700 mt-1">Hapus favicon</button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="remove_favicon" id="remove_favicon" value="0">
+                                @endif
+                                <input type="file" name="favicon" accept="image/x-icon,image/png"
+                                    class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                <p class="text-xs text-gray-400 mt-1">Format: ICO, PNG. Max: 1MB. Rekomendasi: 32x32px atau
+                                    64x64px</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Logo Alt Text (SEO)</label>
+                                <input type="text" name="logo_alt"
+                                    value="{{ old('logo_alt', $siteIdentity->logo_alt) }}"
+                                    placeholder="PT Dotech Digital Solution Logo"
+                                    class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                            </div>
+
+                            <div class="flex items-center gap-6">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="show_search" value="1"
+                                        {{ $siteIdentity->show_search ? 'checked' : '' }}
+                                        class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="text-sm text-gray-700">Tampilkan Search di Navbar</span>
+                                </label>
+
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="sticky_header" value="1"
+                                        {{ $siteIdentity->sticky_header ? 'checked' : '' }}
+                                        class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="text-sm text-gray-700">Sticky Header</span>
+                                </label>
+                            </div>
+
+                            <div class="flex justify-end pt-4">
+                                <button type="submit"
+                                    class="px-6 py-2.5 bg-gradient-to-r from-dotech-blue to-blue-600 text-white text-sm font-medium rounded-xl hover:shadow-lg transition-all">
+                                    <i class="fas fa-save mr-2"></i>Simpan Perubahan
+                                </button>
+                            </div>
+                        </form>
+
+                        {{-- Navbar Links Manager --}}
+                        <div class="border-t border-gray-200 pt-6 mt-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h2 class="text-lg font-semibold text-gray-800">Navbar Links</h2>
+                                    <p class="text-sm text-gray-500 mt-0.5">Kelola menu navigasi website Anda</p>
+                                </div>
+                                <button type="button" onclick="openAddNavLinkModal()"
+                                    class="px-4 py-2 bg-gradient-to-r from-dotech-blue to-blue-600 text-white text-sm font-medium rounded-xl hover:shadow-lg transition-all flex items-center gap-2">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Tambah Link</span>
+                                </button>
+                            </div>
+
+                            <div class="space-y-3" id="navbarLinksList">
+                                @forelse($siteIdentity->formatted_navbar_links as $index => $link)
+                                    <div class="bg-gray-50 rounded-xl p-4 flex items-center justify-between group"
+                                        data-index="{{ $index }}">
+                                        <div class="flex items-center gap-4 flex-1">
+                                            <div class="cursor-move text-gray-400 hover:text-gray-600">
+                                                <i class="fas fa-grip-vertical"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center gap-2">
+                                                    @if ($link['icon'])
+                                                        <i class="{{ $link['icon'] }} text-gray-500"></i>
+                                                    @endif
+                                                    <h4 class="font-semibold text-gray-800">{{ $link['label'] }}</h4>
+                                                    @if (!$link['is_active'])
+                                                        <span
+                                                            class="text-xs px-2 py-0.5 rounded-full bg-gray-200 text-gray-600">Tidak
+                                                            Aktif</span>
+                                                    @endif
+                                                    @if ($link['target'] === '_blank')
+                                                        <span
+                                                            class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600">New
+                                                            Tab</span>
+                                                    @endif
+                                                </div>
+                                                <div class="text-sm text-gray-500 mt-1">{{ $link['url'] }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" class="toggle-navlink sr-only peer"
+                                                    data-index="{{ $index }}"
+                                                    {{ $link['is_active'] ? 'checked' : '' }}>
+                                                <div
+                                                    class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white
+                                         after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-dotech-blue">
+                                                </div>
+                                            </label>
+                                            <button onclick="editNavLink({{ $index }})"
+                                                class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button onclick="deleteNavLink({{ $index }})"
+                                                class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <div class="text-center py-12">
+                                        <div
+                                            class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <i class="fas fa-link text-gray-400 text-2xl"></i>
+                                        </div>
+                                        <p class="text-gray-500">Belum ada navbar link</p>
+                                        <p class="text-sm text-gray-400 mt-1">Klik tombol "Tambah Link" untuk menambahkan
+                                        </p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -907,6 +1141,86 @@
         </div>
     </div>
 
+    {{-- Add/Edit Navbar Link Modal --}}
+    <div id="navLinkModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" onclick="closeNavLinkModal()"></div>
+            <div
+                class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <form id="navLinkForm" method="POST" action="{{ route('admin.site-settings.navbar-links.update') }}">
+                    @csrf
+                    <input type="hidden" name="edit_index" id="editIndex" value="-1">
+
+                    <div class="bg-white px-6 pt-6 pb-4">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4" id="navLinkModalTitle">Tambah Navbar Link</h3>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Label</label>
+                                <input type="text" name="label" id="navLabel" required
+                                    placeholder="Home, Projects, Contact"
+                                    class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">URL / Route</label>
+                                <div class="flex gap-2">
+                                    <input type="text" name="url" id="navUrl" required
+                                        placeholder="/contact or route:contact"
+                                        class="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                                    <button type="button" onclick="openRouteSelectorForNav()"
+                                        class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition">
+                                        <i class="fas fa-link text-gray-600"></i>
+                                    </button>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Gunakan format <code>route:contact</code> untuk named
+                                    route</p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Icon (Optional)</label>
+                                <div class="flex gap-2">
+                                    <input type="text" name="icon" id="navIcon" placeholder="fas fa-home"
+                                        class="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
+                                    <button type="button" onclick="openIconPicker()"
+                                        class="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-xl transition">
+                                        <i class="fas fa-icons text-gray-600"></i>
+                                    </button>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">Contoh: fas fa-home, fab fa-github</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="is_active" id="navIsActive" value="1" checked
+                                        class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="text-sm text-gray-700">Aktif</span>
+                                </label>
+
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="target" id="navTarget" value="_blank"
+                                        class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                    <span class="text-sm text-gray-700">Buka di tab baru</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 px-6 py-4 flex gap-3 justify-end">
+                        <button type="button" onclick="closeNavLinkModal()"
+                            class="px-5 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="px-5 py-2.5 bg-gradient-to-r from-dotech-blue to-blue-600 text-white text-sm font-medium rounded-xl hover:shadow-lg transition">
+                            <i class="fas fa-save mr-2"></i>Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     @push('styles')
         <style>
             .tab-content {
@@ -1043,7 +1357,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const activeTab = urlParams.get('tab');
-                if (activeTab && ['hero', 'about', 'contact', 'social', 'teams'].includes(activeTab)) {
+                if (activeTab && ['identity', 'hero', 'about', 'contact', 'social', 'teams'].includes(activeTab)) {
                     switchTab(activeTab);
                 } else {
                     switchTab('hero');
@@ -1438,6 +1752,174 @@
                     closeRouteModal();
                 }
             });
+
+            let navLinksData = @json($siteIdentity->navbar_links ?? []);
+
+            function openAddNavLinkModal() {
+                document.getElementById('navLinkModalTitle').innerText = 'Tambah Navbar Link';
+                document.getElementById('editIndex').value = '-1';
+                document.getElementById('navLabel').value = '';
+                document.getElementById('navUrl').value = '';
+                document.getElementById('navIcon').value = '';
+                document.getElementById('navIsActive').checked = true;
+                document.getElementById('navTarget').checked = false;
+                document.getElementById('navLinkModal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function editNavLink(index) {
+                const link = navLinksData[index];
+                if (link) {
+                    document.getElementById('navLinkModalTitle').innerText = 'Edit Navbar Link';
+                    document.getElementById('editIndex').value = index;
+                    document.getElementById('navLabel').value = link.label;
+                    document.getElementById('navUrl').value = link.url;
+                    document.getElementById('navIcon').value = link.icon || '';
+                    document.getElementById('navIsActive').checked = link.is_active !== false;
+                    document.getElementById('navTarget').checked = link.target === '_blank';
+                    document.getElementById('navLinkModal').classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function deleteNavLink(index) {
+                if (confirm('Apakah Anda yakin ingin menghapus link ini?')) {
+                    navLinksData.splice(index, 1);
+                    saveNavLinks();
+                }
+            }
+
+            function saveNavLinks() {
+                fetch('{{ route('admin.site-settings.navbar-links.update') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            navbar_links: navLinksData
+                        })
+                    }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        }
+                    });
+            }
+
+            // Handle NavLink form submission
+            document.getElementById('navLinkForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                console.log("OK")
+
+                const editIndex = parseInt(document.getElementById('editIndex').value);
+                const newLink = {
+                    label: document.getElementById('navLabel').value,
+                    url: document.getElementById('navUrl').value,
+                    icon: document.getElementById('navIcon').value || null,
+                    is_active: document.getElementById('navIsActive').checked,
+                    target: document.getElementById('navTarget').checked ? '_blank' : '_self'
+                };
+
+                if (editIndex >= 0) {
+                    navLinksData[editIndex] = newLink;
+                } else {
+                    navLinksData.push(newLink);
+                }
+
+                saveNavLinks();
+            });
+
+            function closeNavLinkModal() {
+                document.getElementById('navLinkModal').classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+
+            // Route selector for nav links
+            let navRouteCallback = null;
+
+            function openRouteSelectorForNav() {
+                navRouteCallback = function(url) {
+                    document.getElementById('navUrl').value = url;
+                };
+                openRouteSelector('nav');
+            }
+
+            // Sortable for navbar links
+            const navbarLinksList = document.getElementById('navbarLinksList');
+            if (navbarLinksList && navbarLinksList.children.length > 0) {
+                new Sortable(navbarLinksList, {
+                    animation: 150,
+                    handle: '.cursor-move',
+                    ghostClass: 'dragging',
+                    onEnd: function() {
+                        const items = document.querySelectorAll('#navbarLinksList > div');
+                        const newOrder = [];
+                        items.forEach((item, index) => {
+                            const originalIndex = parseInt(item.dataset.index);
+                            newOrder.push(navLinksData[originalIndex]);
+                        });
+                        navLinksData = newOrder;
+                        saveNavLinks();
+                    }
+                });
+            }
+
+            // Toggle navbar link active status
+            document.querySelectorAll('.toggle-navlink').forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    const index = parseInt(this.dataset.index);
+                    if (navLinksData[index]) {
+                        navLinksData[index].is_active = this.checked;
+                        saveNavLinks();
+                    }
+                });
+            });
+
+            // Logo delete confirmation
+            function confirmDeleteLogo(type) {
+                if (confirm('Apakah Anda yakin ingin menghapus logo ini?')) {
+                    document.getElementById(`remove_logo_${type}`).value = '1';
+                    document.getElementById(`remove_logo_${type}`).closest('.mb-3').style.display = 'none';
+                    showToast('Logo akan dihapus saat menyimpan', 'info');
+                }
+            }
+
+            function confirmDeleteFavicon() {
+                if (confirm('Apakah Anda yakin ingin menghapus favicon?')) {
+                    document.getElementById('remove_favicon').value = '1';
+                    document.getElementById('remove_favicon').closest('.mb-3').style.display = 'none';
+                    showToast('Favicon akan dihapus saat menyimpan', 'info');
+                }
+            }
+
+            function openIconPicker() {
+                // Simple icon picker - you can expand this
+                const icons = [
+                    'fas fa-home', 'fas fa-info-circle', 'fas fa-envelope', 'fas fa-briefcase',
+                    'fas fa-folder-open', 'fas fa-cogs', 'fas fa-users', 'fas fa-blog',
+                    'fab fa-facebook', 'fab fa-instagram', 'fab fa-twitter', 'fab fa-linkedin'
+                ];
+
+                const iconList = icons.map(icon =>
+                    `<button type="button" onclick="selectIcon('${icon}')" class="p-2 hover:bg-gray-100 rounded-lg">
+            <i class="${icon} text-gray-600"></i>
+         </button>`
+                ).join('');
+
+                // You can implement a modal icon picker here
+                // For simplicity, we'll just show a prompt
+                const icon = prompt('Masukkan class icon (contoh: fas fa-home):');
+                if (icon) {
+                    document.getElementById('navIcon').value = icon;
+                }
+            }
+
+            function selectIcon(icon) {
+                document.getElementById('navIcon').value = icon;
+                // Close icon picker modal if implemented
+            }
         </script>
     @endpush
 @endsection

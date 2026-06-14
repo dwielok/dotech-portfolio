@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HeroSection;
 use App\Models\AboutUs;
 use App\Models\ContactInformation;
+use App\Models\SiteIdentity;
 use App\Models\SocialLink;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class SiteSettingController extends Controller
         $contact = ContactInformation::first() ?? new ContactInformation(['is_active' => true]);
         $socialLinks = SocialLink::active()->get();
         $teams = Team::ordered()->get();
+        $siteIdentity = SiteIdentity::getInstance();
 
         $routes = collect(Route::getRoutes())
             ->filter(function ($route) {
@@ -50,7 +52,7 @@ class SiteSettingController extends Controller
             })
             ->values();
 
-        return view('admin.site-settings.index', compact('hero', 'about', 'contact', 'socialLinks', 'teams', 'routes'));
+        return view('admin.site-settings.index', compact('hero', 'about', 'contact', 'socialLinks', 'teams', 'routes', 'siteIdentity'));
     }
 
     /**
@@ -469,5 +471,99 @@ class SiteSettingController extends Controller
             'meta_title' => $team->meta_title,
             'meta_description' => $team->meta_description,
         ]);
+    }
+
+    /**
+     * Update Site Identity
+     */
+    public function updateSiteIdentity(Request $request)
+    {
+        $validated = $request->validate([
+            'site_name' => 'required|string|max:255',
+            'site_title' => 'nullable|string|max:255',
+            'site_description' => 'nullable|string|max:500',
+            'logo_dark' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'logo_light' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
+            'favicon' => 'nullable|image|mimes:ico,png|max:1024',
+            'logo_alt' => 'nullable|string|max:255',
+            'show_search' => 'boolean',
+            'sticky_header' => 'boolean',
+            'is_active' => 'boolean',
+        ]);
+
+        $siteIdentity = SiteIdentity::getInstance();
+
+        // Handle logo dark upload
+        if ($request->hasFile('logo_dark')) {
+            if ($siteIdentity->logo_dark && Storage::disk('public')->exists($siteIdentity->logo_dark)) {
+                Storage::disk('public')->delete($siteIdentity->logo_dark);
+            }
+            $path = $request->file('logo_dark')->store('site/logos', 'public');
+            $validated['logo_dark'] = $path;
+        }
+
+        // Handle logo light upload
+        if ($request->hasFile('logo_light')) {
+            if ($siteIdentity->logo_light && Storage::disk('public')->exists($siteIdentity->logo_light)) {
+                Storage::disk('public')->delete($siteIdentity->logo_light);
+            }
+            $path = $request->file('logo_light')->store('site/logos', 'public');
+            $validated['logo_light'] = $path;
+        }
+
+        // Handle favicon upload
+        if ($request->hasFile('favicon')) {
+            if ($siteIdentity->favicon && Storage::disk('public')->exists($siteIdentity->favicon)) {
+                Storage::disk('public')->delete($siteIdentity->favicon);
+            }
+            $path = $request->file('favicon')->store('site/favicons', 'public');
+            $validated['favicon'] = $path;
+        }
+
+        $validated['show_search'] = $request->has('show_search');
+        $validated['sticky_header'] = $request->has('sticky_header');
+        $validated['is_active'] = $request->has('is_active');
+
+        $siteIdentity->update($validated);
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Update Navbar Links
+     */
+    public function updateNavbarLinks(Request $request)
+    {
+        $validated = $request->validate([
+            'navbar_links' => 'nullable|array',
+            'navbar_links.*.label' => 'required|string|max:100',
+            'navbar_links.*.url' => 'required|string|max:255',
+            'navbar_links.*.is_active' => 'boolean',
+            'navbar_links.*.target' => 'in:_self,_blank',
+            'navbar_links.*.icon' => 'nullable|string|max:100',
+        ]);
+
+        $siteIdentity = SiteIdentity::getInstance();
+
+        $navbarLinks = [];
+        if ($request->has('navbar_links')) {
+            foreach ($request->navbar_links as $link) {
+                $navbarLinks[] = [
+                    'label' => $link['label'],
+                    'url' => $link['url'],
+                    'is_active' => isset($link['is_active']) ? true : false,
+                    'target' => $link['target'] ?? '_self',
+                    'icon' => $link['icon'] ?? null,
+                ];
+            }
+        }
+
+        $siteIdentity->update(['navbar_links' => $navbarLinks]);
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

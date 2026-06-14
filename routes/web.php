@@ -81,5 +81,8 @@ Route::prefix('admin')
         Route::put('/site-settings/teams/{team}', [Admin\SiteSettingController::class, 'updateTeam'])->name('site-settings.teams.update');
         Route::delete('/site-settings/teams/{team}', [Admin\SiteSettingController::class, 'destroyTeam'])->name('site-settings.teams.destroy');
         Route::post('/site-settings/teams/reorder', [Admin\SiteSettingController::class, 'reorderTeams'])->name('site-settings.teams.reorder');
-        Route::get('/site-settings/teams/{team}/edit', [Admin\SiteSettingController::class, 'editTeam'])->name('admin.site-settings.teams.edit');
+        Route::get('/site-settings/teams/{team}/edit', [Admin\SiteSettingController::class, 'editTeam'])->name('site-settings.teams.edit');
+
+        Route::put('/admin/site-settings/identity', [Admin\SiteSettingController::class, 'updateSiteIdentity'])->name('site-settings.identity.update');
+        Route::post('/admin/site-settings/navbar-links', [Admin\SiteSettingController::class, 'updateNavbarLinks'])->name('site-settings.navbar-links.update');
     });
