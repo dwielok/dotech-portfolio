@@ -212,35 +212,55 @@
                                             class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
                                     </div>
                                     <div class="max-h-96 overflow-y-auto space-y-2">
-                                        @php
-                                            $routes = [
-                                                ['name' => 'Homepage', 'url' => '/', 'route' => 'home'],
-                                                [
-                                                    'name' => 'Projects',
-                                                    'url' => '/projects',
-                                                    'route' => 'projects.index',
-                                                ],
-                                                [
-                                                    'name' => 'Project Detail',
-                                                    'url' => '/projects/{slug}',
-                                                    'route' => 'projects.show',
-                                                    'dynamic' => true,
-                                                ],
-                                                [
-                                                    'name' => 'Services',
-                                                    'url' => '/services',
-                                                    'route' => 'services.index',
-                                                ],
-                                                ['name' => 'Contact', 'url' => '/contact', 'route' => 'contact'],
-                                                ['name' => 'About Us', 'url' => '/about', 'route' => 'about'],
-                                            ];
-                                        @endphp
                                         @foreach ($routes as $route)
-                                            <button type="button" onclick="selectRoute('{{ $route['url'] }}')"
-                                                class="route-item w-full text-left px-4 py-3 hover:bg-gray-50 rounded-lg transition border border-gray-100"
-                                                data-name="{{ $route['name'] }}" data-url="{{ $route['url'] }}">
-                                                <div class="font-medium text-gray-800">{{ $route['name'] }}</div>
-                                                <div class="text-xs text-gray-500 mt-0.5">{{ $route['url'] }}</div>
+                                            @php
+                                                $icon = match (true) {
+                                                    str_contains($route['name'], 'home') => 'fas fa-home',
+                                                    str_contains($route['name'], 'project') => 'fas fa-folder-open',
+                                                    str_contains($route['name'], 'service') => 'fas fa-briefcase',
+                                                    str_contains($route['name'], 'contact') => 'fas fa-envelope',
+                                                    str_contains($route['name'], 'about') => 'fas fa-users',
+                                                    default => 'fas fa-route',
+                                                };
+                                            @endphp
+                                            <button type="button" onclick="selectRoute('{{ $route['uri'] }}')"
+                                                class="route-item group w-full text-left p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 transition-all duration-200 hover:shadow-sm"
+                                                data-name="{{ $route['name'] }}" data-url="{{ $route['uri'] }}">
+                                                <div class="flex items-center justify-between gap-4">
+                                                    <div class="min-w-0 flex-1">
+                                                        <div class="flex items-center gap-2">
+                                                            <div
+                                                                class="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-blue-100 flex items-center justify-center transition">
+                                                                <i
+                                                                    class="{{ $icon }} text-gray-500 group-hover:text-blue-600 text-xs"></i>
+                                                            </div>
+
+                                                            <div class="min-w-0">
+                                                                <div
+                                                                    class="font-semibold text-gray-800 group-hover:text-blue-700 truncate">
+                                                                    {{ $route['name'] }}
+                                                                </div>
+
+                                                                <div
+                                                                    class="text-xs text-gray-500 font-mono mt-0.5 truncate">
+                                                                    {{ $route['uri'] }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (!empty($route['parameters']))
+                                                        <span
+                                                            class="shrink-0 px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700">
+                                                            Dynamic
+                                                        </span>
+                                                    @else
+                                                        <span
+                                                            class="shrink-0 px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                                                            Static
+                                                        </span>
+                                                    @endif
+                                                </div>
                                             </button>
                                         @endforeach
                                     </div>

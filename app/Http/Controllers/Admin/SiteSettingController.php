@@ -11,6 +11,7 @@ use App\Models\SocialLink;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Route;
 
 class SiteSettingController extends Controller
 {
@@ -25,7 +26,24 @@ class SiteSettingController extends Controller
         $socialLinks = SocialLink::active()->get();
         $teams = Team::ordered()->get();
 
-        return view('admin.site-settings.index', compact('hero', 'about', 'contact', 'socialLinks', 'teams'));
+        $routes = collect(Route::getRoutes())
+            ->filter(function ($route) {
+                $name = $route->getName();
+
+                return $name
+                    && !str_starts_with($name, 'admin.')
+                    && !str_starts_with($name, 'debugbar.')
+                    && !str_starts_with($name, 'ignition.');
+            })
+            ->map(function ($route) {
+                return [
+                    'name' => $route->getName(),
+                    'uri' => '/' . ltrim($route->uri(), '/'),
+                ];
+            })
+            ->values();
+
+        return view('admin.site-settings.index', compact('hero', 'about', 'contact', 'socialLinks', 'teams', 'routes'));
     }
 
     /**
