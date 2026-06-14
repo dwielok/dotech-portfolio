@@ -37,6 +37,9 @@ class SiteSettingController extends Controller
                     && !str_starts_with($name, 'password.')
                     && !str_starts_with($name, 'storage.')
                     && !str_starts_with($name, 'verification.')
+                    && !str_starts_with($name, 'register')
+                    && !str_starts_with($name, 'login')
+                    && !str_starts_with($name, 'logout')
                     && !str_ends_with($name, '.store');
             })
             ->map(function ($route) {
