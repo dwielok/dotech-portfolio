@@ -269,8 +269,7 @@ class SiteSettingController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_alt' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
-            'expertise' => 'nullable|array',
-            'expertise.*' => 'string|max:100',
+            'expertise_input' => 'nullable|string',
             'experience_years' => 'nullable|integer|min:0',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:50',
@@ -302,8 +301,10 @@ class SiteSettingController extends Controller
         $validated['social_links'] = $socialLinks;
 
         // Handle expertise as array
-        if ($request->has('expertise')) {
-            $validated['expertise'] = array_filter($request->expertise);
+        if ($request->filled('expertise_input')) {
+            $validated['expertise'] = array_filter(
+                array_map('trim', explode(',', $request->expertise_input))
+            );
         }
 
         $validated['is_active'] = $request->has('is_active');
@@ -327,8 +328,7 @@ class SiteSettingController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'image_alt' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
-            'expertise' => 'nullable|array',
-            'expertise.*' => 'string|max:100',
+            'expertise_input' => 'nullable|string',
             'experience_years' => 'nullable|integer|min:0',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|string|max:50',
@@ -365,8 +365,10 @@ class SiteSettingController extends Controller
         $validated['social_links'] = $socialLinks;
 
         // Handle expertise as array
-        if ($request->has('expertise')) {
-            $validated['expertise'] = array_filter($request->expertise);
+        if ($request->filled('expertise_input')) {
+            $validated['expertise'] = array_filter(
+                array_map('trim', explode(',', $request->expertise_input))
+            );
         }
 
         $validated['is_active'] = $request->has('is_active');

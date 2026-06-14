@@ -90,7 +90,7 @@ class Team extends Model
      */
     public function getSocialLink($platform): ?string
     {
-        return $this->social_links[$platform] ?? null;
+        return $this->social_links[$platform]["url"] ?? null;
     }
 
     /**

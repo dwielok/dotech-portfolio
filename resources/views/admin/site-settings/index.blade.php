@@ -1180,10 +1180,10 @@
                         document.getElementById('team_expertise_input').value = data.expertise ? data.expertise.join(', ') :
                             '';
                         document.getElementById('team_experience_years').value = data.experience_years || '';
-                        document.getElementById('team_facebook').value = data.social_links?.facebook || '';
-                        document.getElementById('team_instagram').value = data.social_links?.instagram || '';
-                        document.getElementById('team_linkedin').value = data.social_links?.linkedin || '';
-                        document.getElementById('team_twitter').value = data.social_links?.twitter || '';
+                        document.getElementById('team_facebook').value = data.social_links?.facebook?.url || '';
+                        document.getElementById('team_instagram').value = data.social_links?.instagram?.url || '';
+                        document.getElementById('team_linkedin').value = data.social_links?.linkedin?.url || '';
+                        document.getElementById('team_twitter').value = data.social_links?.twitter?.url || '';
                         document.getElementById('team_meta_title').value = data.meta_title || '';
                         document.getElementById('team_meta_description').value = data.meta_description || '';
                         document.getElementById('team_is_active').checked = data.is_active;
