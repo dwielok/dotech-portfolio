@@ -186,7 +186,7 @@
                 {{-- Copyright --}}
                 <div class="text-sm text-gray-500 flex items-center gap-2">
                     <i class="far fa-copyright text-xs"></i>
-                    <span>{{ date('Y') }} PT Dotech Digital Solution. All rights reserved.</span>
+                    <span>{{ date('Y') }} Hevi Digital Solution Solution. All rights reserved.</span>
                 </div>
 
                 {{-- Newsletter (optional) --}}

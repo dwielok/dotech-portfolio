@@ -483,7 +483,7 @@
 
                 {{-- Footer Text --}}
                 <div class="mt-6 text-center text-xs text-gray-500">
-                    <p>© {{ date('Y') }} PT Dotech Digital Solution. All rights reserved.</p>
+                    <p>© {{ date('Y') }} Hevi Digital Solution Solution. All rights reserved.</p>
                 </div>
             </div>
         </div>

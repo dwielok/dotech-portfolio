@@ -10,7 +10,7 @@ class ContactInformationSeeder extends Seeder
     public function run(): void
     {
         ContactInformation::create([
-            'company_name'      => 'PT Dotech Digital Solution',
+            'company_name'      => 'Hevi Digital Solution Solution',
             'email'             => 'info@dotech.id',
             'phone'             => '+62-274-000-0000',
             'whatsapp'          => '+6281234567890',

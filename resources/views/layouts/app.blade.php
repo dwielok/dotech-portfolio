@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'PT Dotech Digital Solution')</title>
-    <meta name="description" content="@yield('meta_description', 'PT Dotech Digital Solution - Web Development, Mobile Development, Cloud Solution, IT Consulting')">
+    <title>@yield('title', 'Hevi Digital Solution Solution')</title>
+    <meta name="description" content="@yield('meta_description', 'Hevi Digital Solution Solution - Web Development, Mobile Development, Cloud Solution, IT Consulting')">
     <meta name="keywords" content="@yield('meta_keywords', 'IT solution, web development, mobile development, cloud solution, Yogyakarta')">
-    <meta property="og:title" content="@yield('title', 'PT Dotech Digital Solution')">
-    <meta property="og:description" content="@yield('meta_description', 'PT Dotech Digital Solution')">
+    <meta property="og:title" content="@yield('title', 'Hevi Digital Solution Solution')">
+    <meta property="og:description" content="@yield('meta_description', 'Hevi Digital Solution Solution')">
     <meta property="og:image" content="@yield('og_image', asset('images/og-image.jpg'))">
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,31 +23,40 @@
         .stat-card {
             transition: transform 0.3s ease;
         }
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
+
         .service-card {
             transition: all 0.3s ease;
         }
+
         .service-card:hover {
             transform: translateY(-4px);
         }
+
         .lazy {
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .lazy.loaded {
             opacity: 1;
         }
+
         /* Ensure all icons have consistent display */
-        .fas, .fab, .far {
+        .fas,
+        .fab,
+        .far {
             display: inline-block;
         }
+
         .group:hover .fa-lightbulb,
         .group:hover .fa-shield-alt,
         .group:hover .fa-handshake,
         .group:hover .fa-chart-line {
-            filter: drop-shadow(0 0 4px rgba(255,255,255,0.5));
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
         }
     </style>
 </head>

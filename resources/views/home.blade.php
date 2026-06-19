@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'PT Dotech Digital Solution - IT Solutions Terpercaya')
+@section('title', 'Hevi Digital Solution - IT Solutions Terpercaya')
 
 @section('content')
 
@@ -579,7 +579,7 @@
                         <span class="bg-blue-100 text-blue-700 text-sm font-semibold px-4 py-1.5 rounded-full">Tentang
                             Kami</span>
                         <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mt-4">
-                            {{ $about->title ?? 'PT Dotech Digital Solution' }}</h2>
+                            {{ $about->title ?? 'Hevi Digital Solution Solution' }}</h2>
                         @if ($about->subtitle)
                             <p class="text-lg text-gray-600 mt-2">{{ $about->subtitle }}</p>
                         @endif

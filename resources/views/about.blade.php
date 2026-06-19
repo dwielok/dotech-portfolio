@@ -1,7 +1,7 @@
 {{-- resources/views/about.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Tentang Kami - PT Dotech Digital Solution')
+@section('title', 'Tentang Kami - Hevi Digital Solution Solution')
 
 @section('content')
 
@@ -164,7 +164,7 @@
                             @if ($about->description)
                                 {!! $about->description !!}
                             @else
-                                <p>PT Dotech Digital Solution berdiri sejak tahun 2016 dengan visi menjadi perusahaan
+                                <p>Hevi Digital Solution Solution berdiri sejak tahun 2016 dengan visi menjadi perusahaan
                                     teknologi terdepan yang membantu bisnis di Indonesia bertransformasi secara digital.
                                     Kami percaya bahwa teknologi yang tepat dapat menjadi katalis pertumbuhan bisnis yang
                                     signifikan.</p>

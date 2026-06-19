@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $project->meta_title ?? $project->title . ' - PT Dotech Digital Solution')
+@section('title', $project->meta_title ?? $project->title . ' - Hevi Digital Solution Solution')
 @section('meta_description', $project->meta_description ?? $project->short_description)
 @section('meta_keywords', $project->meta_keywords)
 

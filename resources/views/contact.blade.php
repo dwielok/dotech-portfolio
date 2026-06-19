@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Hubungi Kami — PT Dotech Digital Solution')
+@section('title', 'Hubungi Kami — Hevi Digital Solution Solution')
 
 @section('content')
     <div>

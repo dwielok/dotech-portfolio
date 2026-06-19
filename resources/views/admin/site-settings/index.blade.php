@@ -690,7 +690,7 @@
                                         Title)</label>
                                     <input type="text" name="site_title"
                                         value="{{ old('site_title', $siteIdentity->site_title) }}"
-                                        placeholder="PT Dotech Digital Solution - IT Solutions"
+                                        placeholder="Hevi Digital Solution Solution - IT Solutions"
                                         class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
                                 </div>
                             </div>
@@ -776,7 +776,7 @@
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Logo Alt Text (SEO)</label>
                                 <input type="text" name="logo_alt"
                                     value="{{ old('logo_alt', $siteIdentity->logo_alt) }}"
-                                    placeholder="PT Dotech Digital Solution Logo"
+                                    placeholder="Hevi Digital Solution Solution Logo"
                                     class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition">
                             </div>
 

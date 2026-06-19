@@ -71,6 +71,6 @@ class Project extends Model
 
     public function getMetaTitleAttribute($value): string
     {
-        return $value ?? $this->title . ' | PT Dotech Digital Solution';
+        return $value ?? $this->title . ' | Hevi Digital Solution Solution';
     }
 }
