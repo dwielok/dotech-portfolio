@@ -526,7 +526,8 @@ class SiteSettingController extends Controller
 
         $siteIdentity->update($validated);
 
-        return response()->json(['success' => true]);
+        return redirect()->route('admin.site-settings.index', ['tab' => 'identity'])
+            ->with('success', 'Site Identity berhasil diperbarui.');
     }
 
     /**

@@ -1360,7 +1360,7 @@
                 if (activeTab && ['identity', 'hero', 'about', 'contact', 'social', 'teams'].includes(activeTab)) {
                     switchTab(activeTab);
                 } else {
-                    switchTab('hero');
+                    switchTab('identity');
                 }
 
                 // Initialize rich text editors when about tab is shown
